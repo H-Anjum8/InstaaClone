@@ -4,16 +4,16 @@ import { Formik } from 'formik'
 import {signupInitialValues, signupValidationSchema, } from './utils'
 import InputBox from '../../components/InputBox'
 import CustomButton from '../../components/CustomButton'
+import { useNavigation } from '@react-navigation/native'
+import { AppColor } from '../../utils/AppColors'
 
-
-
-const Signup = () => {
-    // const navigation = useNavigation();
-    return (
-        <View style={styles.mainContainer}>
+const SignupWithNumber = () => {
+   const navigation = useNavigation();
+  return (
+     <View style={styles.mainContainer}>
             <View style={styles.container}>
-                <Text style={styles.headingText}>SignUp with your mobile Number</Text>
-
+                <Text style={styles.headingText}>What's your mobile Number</Text>
+                <Text style={styles.subtext}>Enter the mobile number where you can be contacted.No one will see this on your profile</Text>
                 <Formik
                     initialValues={signupInitialValues}
                     validationSchema={signupValidationSchema}
@@ -32,7 +32,7 @@ const Signup = () => {
                     }) => (
                         <View>
                             <InputBox
-                                placeholder={'Number'}
+                                placeholder={'Mobile number'}
                                 onChangeText={handleChange('number')}
                                 onBlur={handleBlur('number')}
                                 value={values.number}
@@ -41,40 +41,53 @@ const Signup = () => {
                                 keyboardType="numeric"
                                 maxLength={11}
                             />
-                            <CustomButton btnTitle={'SignUp'} onPress={handleSubmit} disabled={!isValid} />
+                              <Text style={styles.subtext2}>You may receive WhatsApp and SMS notifications from us fro security and login purposes.</Text>
+                            <CustomButton  btnTitle={'Next'} onPress={handleSubmit} disabled={!isValid} />
+                            <CustomButton  btnTitle={'Sign up with Email'}  onPress={()=>navigation.navigate('SignupWithEmail')} disabled={!isValid} bgcolor={true} />
                         </View>
                     )}
                 </Formik>
+               
             </View>
 
             <View style={styles.signupText}>
-                <TouchableOpacity  >
-                    <Text style={{ color: 'black', paddingBottom: 60, fontSize: 20, }}>
-                        Login
+                <TouchableOpacity onPress={()=>{navigation.navigate('Login')}} >
+                    <Text style={{ color: AppColor.button, paddingBottom: 30, fontSize: 20, }}>
+                       Find my account
                     </Text>
                 </TouchableOpacity>
             </View>
         </View>
-
-    )
+  )
 }
 
-export default Signup
-
+export default SignupWithNumber
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         fontSize: 70,
-        marginTop: 200,
+        marginHorizontal:10,
+        marginTop: 30,
         alignItems: 'center',
         justifyContent: 'space-between',
+             
     },
     headingText: {
-        fontSize: 20,
+        fontSize: 40,
         fontWeight: 400,
         marginBottom: 10,
         alignItems: 'center',
 
-    }
+    },
+    subtext:{
+        fontSize:20,
+        marginBottom:10
 
+    },
+    subtext2:{
+         fontSize:16,
+        marginBottom:20,
+          marginHorizontal:6,
+    },
+   
 })

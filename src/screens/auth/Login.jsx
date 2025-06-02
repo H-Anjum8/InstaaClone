@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import { Formik } from 'formik'
 import { loginInitialValues, userValidationSchema } from './utils'
@@ -14,17 +14,18 @@ const Login = () => {
     // }
 
     return (
-        <View style={{ flex: 1, paddingVertical: 80, alignItems: 'center', justifyContent: "space-between" }}>
+        <View style={{ flex: 1, paddingVertical: 20, alignItems: 'center', justifyContent: "space-between" }}>
+
             <View >
-                <View style={styles.img}>
-                    <Image source={require("../../assets/Instagram.png")} />
+                <View style={styles.imgcontainer}>
+                    <Image style={styles.img} source={require("../../assets/Instalogo.png")} />
                 </View>
 
                 <Formik
                     initialValues={loginInitialValues}
                     validationSchema={userValidationSchema}
                     onSubmit={(values) => {
-                       navigation.navigate('Dashboard')
+                        navigation.navigate('Dashboard')
                         console.log('Form submitted successfully', values);
                     }}
                 >
@@ -40,7 +41,7 @@ const Login = () => {
                         return (
                             <View >
                                 <InputBox
-                                    placeholder={'Name'}
+                                    placeholder={'username, email, or mobile number'}
                                     onChangeText={handleChange('username')}
                                     onBlur={handleBlur('username')}
                                     value={values.username}
@@ -57,6 +58,9 @@ const Login = () => {
                                     securityTextEntry={true}
                                 />
                                 <CustomButton btnTitle={'Login'} onPress={handleSubmit} disabled={!isValid} />
+                                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                                    <Text style={styles.password}>Forgot password?</Text>
+                                </TouchableOpacity>
                             </View>
 
                         )
@@ -65,9 +69,11 @@ const Login = () => {
 
             </View>
             <View >
-                <TouchableOpacity>
-                    <Text style={{ color: 'Black', fontSize:14 }}>
-                        SignUp
+                <CustomButton btnTitle={'Create New Account'} onPress={() => navigation.navigate('SignupWithNumber')} type={true} />
+                <TouchableOpacity style={styles.metacontainer}>
+                    <Image style={styles.metaimg} source={require("../../assets/meta.png")} />
+                    <Text style={{ color: 'Black', fontSize: 14, alignSelf: 'center' }}>
+                        Meta
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -79,13 +85,32 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
-    img: {
-        flex: 0.8,
-        justifyContent: 'center',
-
-        paddingHorizontal: 50,
-        paddingVertical: 40
-
+    imgcontainer: {
+       // flex: 0.2,
+        justifyContent: 'start',
+        alignItems: 'center',
+        marginTop: 70,
+        marginBottom: 50
     },
-    
+    img: {
+        width: 80,
+        height: 80,
+    },
+    password: {
+        marginTop: 10,
+        alignSelf: 'center'
+    },
+    metacontainer: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 8
+    },
+    metaimg: {
+        width: 30,
+        height: 30,
+        marginRight:8
+
+    }
+
+
 })
