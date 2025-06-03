@@ -23,10 +23,10 @@ const Post = () => {
                         <Image style={{ height:20, width:20,}} source={require('../assets/Like.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity>
-                        <Image style={styles.reaction} source={require('../assets/Messanger.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
                         <Image style={styles.reaction} source={require('../assets/Comment.png')} />
+                    </TouchableOpacity>
+                     <TouchableOpacity>
+                        <Image style={styles.reaction} source={require('../assets/Messanger.png')} />
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.likecount}>{item.post.like} Likes </Text>

@@ -11,11 +11,11 @@ const CustomButton = ({ btnTitle, onPress, disabled, type,bgcolor }) => {
       ? 'white'
       :AppColor.button ,
       borderWidth: type || bgcolor ? 1 : 0,
-    borderColor: type ? AppColor.button :bgcolor? 'black' :'transparent',
+    borderColor: type ? AppColor.button :bgcolor? 'gray' :'transparent',
   };
 
   const dynamicTextStyle = {
-    color: type ?AppColor.button  :bgcolor? 'black': 'white', // assuming blue is AppColor.button
+    color: type ?AppColor.button  :bgcolor? 'gray': 'white', // assuming blue is AppColor.button
   };
   return (
     <View>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     
     paddingVertical: 10,
     color: 'white',
-    fontSize: 20,
+    fontSize: 17,
     textAlign: 'center',
   
 

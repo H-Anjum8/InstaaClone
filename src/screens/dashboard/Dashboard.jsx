@@ -16,22 +16,7 @@ import Post from '../../components/Post';
 const Dashboard = () => {
   return (
     <View style={styles.container}>
-      {/* Fake background color for status bar area on Android */}
-      {Platform.OS === 'android' && (
-        <View style={styles.statusBarAndroid} />
-      )}
-
-      {/* Fake background for iOS notch area */}
-      {Platform.OS === 'ios' && (
-        <View style={styles.statusBarIOS} />
-      )}
-
-      <StatusBar
-        translucent
-        backgroundColor="gray"
-        barStyle="light-content"
-      />
-
+    
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <Header />

@@ -1,7 +1,7 @@
 import { enableScreens } from 'react-native-screens';
 
 enableScreens();
-import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Platform, StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 import StackNavigation from './src/navigator/StackNavigation'
@@ -10,17 +10,24 @@ import { NavigationContainer } from '@react-navigation/native';
 const App = () => {
   return (
     <>
-        <StatusBar
-        backgroundColor="blue" // Set your desired background color
-        barStyle="dark-content" // Choose 'light-content' for white icons or 'dark-content' for dark icons
-        translucent={false} // Set to true if you want it to be translucent (usually for Android)
-      />
+       
       <NavigationContainer>
-        <StatusBar
-    barStyle="light-content"
-    backgroundColor="#000"
-    translucent={false}
-  />
+         {/* Fake background color for status bar area on Android */}
+             {Platform.OS === 'android' && (
+               <View style={styles.statusBarAndroid} />
+             )}
+       
+             {/* Fake background for iOS notch area */}
+             {Platform.OS === 'ios' && (
+               <View style={styles.statusBarIOS} />
+             )}
+       
+             <StatusBar
+               translucent
+               backgroundColor="gray"
+               barStyle="light-content"
+             />
+       
         <StackNavigation />
 
       </NavigationContainer>
@@ -34,4 +41,22 @@ const App = () => {
 
 export default App
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+ 
+  statusBarAndroid: {
+    height: StatusBar.currentHeight,
+    backgroundColor: 'gray',
+  },
+  statusBarIOS: {
+    height: 44, // Approximate height for iOS notch
+    backgroundColor: 'yellow',
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  scrollContent: {
+    paddingBottom: 20,
+  },
+})

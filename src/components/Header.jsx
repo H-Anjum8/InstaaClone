@@ -13,7 +13,7 @@ const Header = () => {
        </TouchableOpacity>
         <TouchableOpacity >
           <View style={styles.massenger1}>
-            <Image style={styles.massenger2}  source={require('../assets/Messanger.png')} />
+            <Image style={styles.massenger2}  source={require('../assets/Message.png')} />
             <View style={styles.mesgcount1}>
               <Text style={styles.mesgcount2}>
                 5
@@ -52,15 +52,15 @@ const styles = StyleSheet.create({
    marginRight:12
   },
   likeimg:{
-     height:20,
-    width:20
+     height:24,
+    width:24
   },
   massenger1:{
     position:'relative'
   },
   massenger2:{
-   height:20,
-    width:20
+   height:24,
+    width:24
   } ,
    mesgcount1:{
     position:'absolute',
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   },
   mesgcount2:{
     backgroundColor:'red',
+    color:'white',
     borderRadius:10,
     paddingHorizontal:6,
     left:12,

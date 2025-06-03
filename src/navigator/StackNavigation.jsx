@@ -4,9 +4,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../screens/auth/Login';
 import StoryView from '../components/StoryView';
 import BottomNavigation from './BottomNavigation';
-import ForgotPassword from '../screens/auth/ForgotPassword';
 import SignupWithEmail from '../screens/auth/SignupWithEmail';
 import SignupWithNumber from '../screens/auth/SignupWithNumber';
+import ResetPasswordNumber from '../screens/auth/ResetPasswordNumber';
+import ResetPasswordEmail from '../screens/auth/ResetPasswordEmail';
 
 const Stack =  createNativeStackNavigator();
 
@@ -41,8 +42,13 @@ const StackNavigation = () => {
           options={{ headerShown: false }} 
         />
         <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPassword }
+          name="ResetPasswordEmail"
+          component={ResetPasswordEmail }
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="ResetPasswordNumber"
+          component={ResetPasswordNumber }
           options={{ headerShown: false }} 
         />
         
