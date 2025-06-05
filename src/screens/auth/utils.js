@@ -6,8 +6,8 @@ export const loginInitialValues ={
     
 }
 export const userValidationSchema = yup.object().shape({
- username: yup.string().required("username is required"),
- password: yup.string().required("password is required")
+ username: yup.string().required("Enter your username, email or mobile number to log in"),
+ password: yup.string().required("Enter your password to login")
 })
 export const signupeNumberInitialValues ={
       number:"",

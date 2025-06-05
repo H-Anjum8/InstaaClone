@@ -16,11 +16,11 @@ const Post = () => {
                     <Text style={styles.name}>{item.name}</Text>
                 </View>
                 <View>
-                    <Image style={{width:screenWidth, height:400 , }} source={item.post.image} />
+                    <Image style={{width:screenWidth, resizeMode: 'cover', height:420 }} source={item.post.image} />
                 </View>
                 <View style={styles.reactions}>
                     <TouchableOpacity>
-                        <Image style={{ height:20, width:20,}} source={require('../assets/Like.png')} />
+                        <Image style={{ height:22, width:22,  resizeMode: 'contain'}} source={require('../assets/Like.png')} />
                     </TouchableOpacity>
                     <TouchableOpacity>
                         <Image style={styles.reaction} source={require('../assets/Comment.png')} />

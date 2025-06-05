@@ -51,6 +51,9 @@ export default BottomNavigation
 const styles = StyleSheet.create({
   iconeSize: {
     height: 30,
-    width: 30
+    width: 28,
+    resizeMode: 'contain',
+    paddingHorizontal:6,
+
   }
 })

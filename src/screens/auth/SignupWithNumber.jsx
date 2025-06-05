@@ -68,7 +68,7 @@ const SignupWithNumber = () => {
 
         <View style={styles.signupText}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{ color: AppColor.button, paddingBottom: 30, fontSize: 20 }}>
+            <Text style={{ color: AppColor.button, paddingBottom: 30, fontSize: 14, fontWeight:500 }}>
               Find my account
             </Text>
           </TouchableOpacity>
@@ -110,31 +110,35 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     fontSize: 70,
-    marginHorizontal: 10,
-    marginTop: 30,
+    marginHorizontal: 12,
+    marginTop: 12,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   headingText: {
-    fontSize: 40,
+    fontSize: 24,
+     marginTop: 12,
     fontWeight: '400',
-    marginBottom: 10,
+    marginBottom: 8,
     alignItems: 'center',
   },
   subtext: {
-    fontSize: 20,
-    marginBottom: 10,
+    fontSize: 16,
+    marginBottom:16,
+    color:'#2F2F2F'
+    
   },
   subtext2: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 20,
     marginHorizontal: 6,
+    color:'#777777'
   },
-  signupText: {
-    alignItems: 'center',
+  Text: {
+    alignItems: 'start',
   },
 
-  // Modal styles
+ // Modal styles
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

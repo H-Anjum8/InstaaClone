@@ -1,4 +1,4 @@
 export const AppColor ={
-button :"#3797F3",
+button :"#0064e0",
 disable_button:'#83B2F3'
 }

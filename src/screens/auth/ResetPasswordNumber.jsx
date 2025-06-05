@@ -110,86 +110,89 @@ const ResetPasswordNumber = () => {
 export default ResetPasswordNumber
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        fontSize: 70,
-        marginHorizontal: 10,
-        marginTop: 30,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    headingText: {
-        fontSize: 40,
-        fontWeight: '400',
-        marginBottom: 10,
-        alignItems: 'center',
-    },
-    subtext: {
-        fontSize: 20,
-        marginBottom: 10,
-    },
-    subtext2: {
-        fontSize: 16,
-        marginBottom: 20,
-        marginHorizontal: 6,
-    },
-    Text: {
-        alignItems: 'start',
-    },
+  mainContainer: {
+    flex: 1,
+    fontSize: 70,
+    marginHorizontal: 12,
+    marginTop: 12,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headingText: {
+    fontSize: 24,
+     marginTop: 12,
+    fontWeight: '500',
+    marginBottom: 8,
+    alignItems: 'center',
+  },
+  subtext: {
+    fontSize: 16,
+    
+  },
+  subtext2: {
+    fontSize: 14,
+    marginBottom: 20,
+    marginHorizontal: 6,
+    color:'#777777'
+  },
+  Text: {
+    alignItems: 'start',
+  },
 
-    modalOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        justifyContent: 'flex-end',
-    },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
 
-    bottomSheet: {
-        height: '45%',
-        backgroundColor: 'white',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
-        padding: 20,
-        position: 'relative',
-    },
+  bottomSheet: {
+    height: '45%',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    position: 'relative',
+  },
 
-    dragIndicator: {
-        width: 60,
-        height: 5,
-        backgroundColor: '#ccc',
-        borderRadius: 3,
-        alignSelf: 'center',
-        marginBottom: 2,
-    },
+  dragIndicator: {
+    width: 40,
+    height: 5,
+    backgroundColor: '#ccc',
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginBottom: 1,
+  },
 
-    closeButton: {
-        position: 'absolute',
-        right: 20,
-        top: 20,
-    },
+  closeButton: {
+    position: 'absolute',
+    left: 20,
+    top: 40,
+    
+  },
 
-    modalTitle: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 30,
-        marginBottom: 10,
-    },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 500,
+    marginTop: 50,
+    marginBottom: 10,
+  },
 
-    modalText: {
-        fontSize: 16,
-        color: '#555',
-        marginBottom: 30,
-    },
+  modalText: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 30,
+  },
 
-    okButton: {
-        backgroundColor: AppColor.button,
-        paddingVertical: 12,
-        borderRadius: 25,
-        alignItems: 'center',
-    },
+  okButton: {
+    backgroundColor: AppColor.button,
+    paddingVertical: 12,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
 
-    okButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '600',
-    },
+  okButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
