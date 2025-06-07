@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { UserData } from '../utils/UserData';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +7,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 const Stories = () => {
   const navigation = useNavigation();
-
+  const ringColors = ['#f09433', '#e6683c', '#dc2743', '#cc2366', '#bc1888'];
   // State to store your uploaded story image
   const [myStoryImage, setMyStoryImage] = useState(null);
 
@@ -35,11 +35,21 @@ const Stories = () => {
   return (
     <View style={styles.mainContainer}>
       {/* Add Your Story */}
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          paddingVertical: 5,
+          paddingHorizontal: 10,
+        }}>
       <View style={{ marginLeft: 8 }}>
         <TouchableOpacity onPress={addYourStory}>
-          <View style={styles.storyOutline}>
+          <View style={{
+            ...styles.outerRingColor,
+            borderColor: ringColors[ringColors.length], // rotates colors
+          }}>
             <Image
-              style={styles.imgstyle}
+              style={styles.imgstyle2}
               source={
                 myStoryImage
                   ? myStoryImage
@@ -51,23 +61,25 @@ const Stories = () => {
             </View>
           </View>
         </TouchableOpacity>
-        <Text style={{ textAlign: 'center' }}>Your Story</Text>
+        <Text style={{ textAlign: 'center',fontSize:12 }}>Your Story</Text>
       </View>
 
       {/* Map through UserData stories */}
-      {UserData.map((item, index) => {
-        console.log('userdata', item);
-        return (
-          <View key={index} style={{ marginLeft: 8 }}>
-            <TouchableOpacity onPress={() => navigation.navigate('StoryView', { item })}>
-              <View style={styles.storyOutline}>
-                <Image style={styles.imgstyle} source={item.story.image} />
-              </View>
-            </TouchableOpacity>
-            <Text style={{ textAlign: 'center' }}>{item.username}</Text>
-          </View>
-        );
-      })}
+      
+        {UserData.map((item, index) => {
+          console.log('userdata', item);
+          return (
+            <View key={index} style={{ marginLeft: 8 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('StoryView', { item })}>
+                <View style={styles.storyOutline}>
+                  <Image style={styles.imgstyle} source={item.story.image} />
+                </View>
+              </TouchableOpacity>
+              <Text style={{ textAlign: 'center',fontSize:12 }}>{item.username}</Text>
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
@@ -83,18 +95,23 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 40,
     padding: 2,
-    borderColor: 'red',
+    borderColor: '#C13584',
     position: 'relative',
   },
   imgstyle: {
-    height: 70,
+    height: 60,
+    width: 60,
+    borderRadius: 35,
+  },
+  imgstyle2:{
+ height: 68,
     width: 70,
     borderRadius: 35,
   },
   addIcon: {
     position: 'absolute',
     bottom: 0,
-    right: -5,
+    right: 8,
     backgroundColor: '#fff',
     borderRadius: 12,
   },

@@ -1,97 +1,179 @@
 import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { UserData } from '../utils/UserData'
-
+import Feather from 'react-native-vector-icons/Feather';
 const Post = () => {
-   
-        const screenWidth = Dimensions.get('window').width
-  return (
-    <View style={{marginTop:2}}>
-        {
-            UserData.map((item,index) =>{
-             return(
-                <View key={index} style={{marginTop:10}}> 
-                <View style={styles.container}> 
-                    <Image style={styles.img} source={item.profile} />
-                    <Text style={styles.name}>{item.name}</Text>
-                </View>
-                <View>
-                    <Image style={{width:screenWidth, resizeMode: 'cover', height:420 }} source={item.post.image} />
-                </View>
-                <View style={styles.reactions}>
-                    <TouchableOpacity>
-                        <Image style={{ height:22, width:22,  resizeMode: 'contain'}} source={require('../assets/Like.png')} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Image style={styles.reaction} source={require('../assets/Comment.png')} />
-                    </TouchableOpacity>
-                     <TouchableOpacity>
-                        <Image style={styles.reaction} source={require('../assets/Messanger.png')} />
-                    </TouchableOpacity>
-                </View>
-                <Text style={styles.likecount}>{item.post.like} Likes </Text>
-                <View style={styles.caption}>
-                    <Text style={styles.captionuser}>{item.name}</Text>
-                    <Text>{item.post.caption}</Text>
-                </View>
-                </View>
-             )
-})
-        }
 
-    </View>
-  )
+    const screenWidth = Dimensions.get('window').width
+    return (
+        <View style={{ marginTop: 2 }}>
+            {
+                UserData.map((item, index) => {
+                    return (
+                        <View key={index} style={{
+                            marginTop: 20,
+
+                        }}>
+                            <View style={styles.maincontainer}>
+                                <View style={styles.container}>
+                                    <Image style={styles.img} source={item.profile} />
+                                    <View>
+                                        <Text style={styles.name}>{item.name}</Text>
+                                        <Text style={styles.suggest}>Suggested for you</Text>
+                                    </View>
+                                </View>
+                                <View style={styles.container2}>
+
+                                    <Text style={styles.followbtn}>
+                                        Follow
+                                    </Text>
+                                    <View style={{ padding: 10 }}>
+                                        <Feather name="more-vertical" size={24} color="black" />
+                                    </View>
+                                </View>
+                            </View>
+                            <View>
+                                <Image style={{
+                                    width: screenWidth,
+                                    resizeMode: 'cover',
+                                    height: 420
+                                }} source={item.post.image} />
+                            </View>
+                            <View style={styles.reactionsrow}>
+                                <View style={styles.reactions}>
+                                    <TouchableOpacity style={styles.reactionscount}>
+                                        <Image style={{
+                                            height: 22,
+                                            width: 22,
+                                            resizeMode: 'contain'
+                                        }} source={require('../assets/Like.png')} /><Text style={styles.reactiontext}>{item.post.like}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.reactionscount} >
+                                        <Image style={styles.reaction} source={require('../assets/Comment.png')} /> <Text style={styles.reactiontext}>{item.post.comments}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.reactionscount}>
+                                        <Image style={styles.reaction} source={require('../assets/Messanger.png')} /><Text style={styles.reactiontext}>{item.post.share}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity >
+                                    <Feather name="bookmark" size={24} color="black" />
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.caption}>
+                                <Text style={styles.captionuser}>{item.name}</Text>
+                                <Text>{item.post.caption}</Text>
+                            </View>
+                            <Text style={styles.date} >{item.post.date}</Text>
+
+                        </View>
+                    )
+                })
+            }
+
+        </View>
+    )
 }
 
 export default Post
 
 const styles = StyleSheet.create({
-    container:{
-      flexDirection:'row',
-      paddingHorizontal:10,
-      marginBottom:8,
-      alignItems:'left'
-    },
-    img:{
-     width:30,
-     height:30,
-     borderRadius:15
-    },
-    name:{
-        fontWeight:600,
-        color:'black',
-        paddingLeft:4,
-        fontSize:16
-    },
-    reactions:{
-        flexDirection:'row',
-        paddingHorizontal:13,
-        alignItems:'center',
-        marginTop:15
-    },
-    reaction:{
-        height:20,
-        width:20,
-        marginLeft:15
-    },
-    likecount:{
-       fontSize:16,
-       fontWeight:600,
-       marginLeft:13,
-       marginTop:10
-    },
-    caption:{
-        paddingHorizontal:13,
-        marginTop:10,
-        flexDirection:'row',
-        alignItems:'center'
-    },
-    captionuser:{
-        fontSize:16,
-        fontWeight:600,
-        color:'black',
-        marginRight:8,
+    maincontainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 8,
+        paddingHorizontal: 12,
 
+    },
+    container: {
+        flexDirection: 'row',
+        marginBottom: 8,
+        alignItems: 'left',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    container2: {
+        flexDirection: 'row',
+        marginBottom: 8,
+        justifyContent: 'center',
+        alignItems: 'center'
+
+    },
+    img: {
+        width: 30,
+        height: 30,
+        borderRadius: 15
+    },
+    name: {
+        fontWeight: 600,
+        color: 'black',
+        paddingLeft: 6,
+        fontSize: 14
+    },
+    suggest: {
+
+        color: 'black',
+        paddingLeft: 6,
+        fontSize: 8
+    },
+    followbtn: {
+        paddingHorizontal: 16,
+        paddingVertical: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f1f2f6',
+        borderRadius: 10,
+    },
+    reactionsrow:{
+         flexDirection: 'row',
+        paddingHorizontal: 13,
+        justifyContent:"space-between",
+         marginTop: 15,
+         alignItems:'center'
+    },
+    reactions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+       
+    },
+    reactionscount: {
+        flexDirection: 'row',
+        alignItems: 'center',
+
+    },
+    reaction: {
+        height: 20,
+        width: 20,
+        marginLeft: 4
+    },
+    reactiontext: {
+
+        marginLeft: 6
+    },
+    likecount: {
+        fontSize: 16,
+        fontWeight: 600,
+        marginLeft: 13,
+        marginTop: 10
+    },
+    caption: {
+        paddingHorizontal: 13,
+        marginTop: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    captionuser: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: 'black',
+        marginRight: 8,
+
+    },
+    date: {
+        fontSize: 12,
+        paddingHorizontal: 13,
+        color: 'gray',
+        marginRight: 8,
     }
-    
+
 })

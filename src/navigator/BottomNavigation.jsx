@@ -10,7 +10,8 @@ import Reels from '../screens/dashboard/Reels'
 const BottomNavigation = () => {
   const Tab = createBottomTabNavigator()
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, }} >
+    <Tab.Navigator screenOptions={{ headerShown: false, tabBarShowLabel: false, }} style={styles.container}  >
+
       <Tab.Screen name='Home' component={Dashboard}
         options={{
           tabBarIcon: ({ focused }) => (
@@ -39,9 +40,17 @@ const BottomNavigation = () => {
       <Tab.Screen name='UserProfile' component={UserProfile}
         options={{
           tabBarIcon: () => (
-            <Image style={styles.iconeSize} source={require('../assets/footer/user.png')} />
+            <Image style={{
+              height: 24,
+              width: 28,
+              resizeMode: 'cover',
+              marginTop: 8,
+              borderRadius:30,
+             
+            }} source={require('../assets/data/hadidp.webp')} />
           )
         }} />
+
     </Tab.Navigator>
   )
 }
@@ -49,11 +58,15 @@ const BottomNavigation = () => {
 export default BottomNavigation
 
 const styles = StyleSheet.create({
+
   iconeSize: {
-    height: 30,
+
+    height: 24,
     width: 28,
     resizeMode: 'contain',
-    paddingHorizontal:6,
+    paddingHorizontal: 6,
+    marginTop: 8,
 
-  }
+  },
+
 })
