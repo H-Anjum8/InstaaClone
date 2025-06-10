@@ -10,11 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@react-native-camera-roll/camera-roll": "^7.10.0",
     "@react-native-picker/picker": "^2.11.0",
-=======
->>>>>>> ae3066ed969f62ff9f7a4f3c1c60eef0845e1751
     "@react-navigation/bottom-tabs": "^7.3.14",
     "@react-navigation/material-top-tabs": "^7.2.14",
     "@react-navigation/native": "^7.1.9",
@@ -28,15 +25,10 @@
     "react-native-pager-view": "^6.8.1",
     "react-native-safe-area-context": "^5.4.1",
     "react-native-screens": "^4.11.1",
-<<<<<<< HEAD
     "react-native-swiper-flatlist": "^3.2.5",
     "react-native-tab-view": "^4.1.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-video": "^6.14.1",
-=======
-    "react-native-tab-view": "^4.1.1",
-    "react-native-vector-icons": "^10.2.0",
->>>>>>> ae3066ed969f62ff9f7a4f3c1c60eef0845e1751
     "yup": "^1.6.1"
   },
   "devDependencies": {

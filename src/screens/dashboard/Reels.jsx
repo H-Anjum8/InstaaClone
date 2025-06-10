@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import React from 'react';
 import {View, Text, Dimensions} from 'react-native';
@@ -41,19 +40,3 @@ const Reels = () => {
 };
 
 export default Reels;
-=======
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
-const Reels = () => {
-  return (
-    <View>
-      <Text>Reels</Text>
-    </View>
-  )
-}
-
-export default Reels
-
-const styles = StyleSheet.create({})
->>>>>>> ae3066ed969f62ff9f7a4f3c1c60eef0845e1751
