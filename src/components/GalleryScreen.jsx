@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {
-    Text,
-    View,
-    StyleSheet,
-    Dimensions,
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  Image,
+  ScrollView,
 
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -29,9 +31,9 @@ async function hasAndroidPermission() {
 
 export class GalleryScreen extends Component {
 
-    constructor(props) {
+  constructor(props) {
     super(props);
-    this.state = {images: [], albums: [], pickedImage: '', category: ''};
+    this.state = { images: [], albums: [], pickedImage: '', category: '' };
     this.imgArr = [];
   }
 
@@ -40,10 +42,10 @@ export class GalleryScreen extends Component {
       return;
     }
 
-    let params = {assetType: 'All'};
+    let params = { assetType: 'All' };
     CameraRoll.getAlbums(params)
       .then(albums => {
-        this.setState({albums: albums});
+        this.setState({ albums: albums });
         console.log(albums);
       })
       .catch(err => {
@@ -52,7 +54,7 @@ export class GalleryScreen extends Component {
   }
 
   imagePressed = (item, key) => {
-    this.setState({pickedImage: item.node.image.uri});
+    this.setState({ pickedImage: item.node.image.uri });
     this.scrollview_ref.scrollTo({
       x: 0,
       y: this.imgArr[key],
@@ -60,9 +62,9 @@ export class GalleryScreen extends Component {
     });
   };
   pickedCategory = (itemValue, itemIndex) => {
-    let params = {first: 40, groupName: this.state.albums[itemIndex].title};
+    let params = { first: 40, groupName: this.state.albums[itemIndex].title };
 
-    this.setState({category: itemValue});
+    this.setState({ category: itemValue });
 
     CameraRoll.getPhotos(params).then(imgs => {
       console.log(params);
@@ -85,7 +87,7 @@ export class GalleryScreen extends Component {
           onPress={() => {
             this.imagePressed(item, key);
           }}>
-          <Image style={styles.image} source={{uri: item.node.image.uri}} />
+          <Image style={styles.image} source={{ uri: item.node.image.uri }} />
         </TouchableOpacity>
       );
     });
@@ -95,105 +97,119 @@ export class GalleryScreen extends Component {
       return <Picker.Item label={category.title} value={index} />;
     });
   };
-    render() {
-        return (
-            <View >
-                <View style={styles.headerWrapper}>
-                    <View style={styles.headerLeftWrapper}>
-                        <View>
-                            <Icon size={25} name="times" />
-                        </View>
-
-                    </View>
-                    <View>
-                        <View>
-                            <Text style={styles.headerSubTitle}>Next</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.footer}>
-                    <View style={styles.pickedFooterSection}>
-                        <Text style={styles.pickedFooterTitle}>GALLERY</Text>
-                    </View>
-                    <View style={styles.footerSection}>
-                        <Text style={styles.footerTitle}>PHOTO</Text>
-                    </View>
-                    <View style={styles.footerSection}>
-                        <Text style={styles.footerTitle}>VIDEO</Text>
-                    </View>
-                </View>
-                {/* <Text style={{ color: 'red' }} >WELLCOME</Text> */}
+  render() {
+    return (
+      <View >
+        <View style={styles.headerWrapper}>
+          <View style={styles.headerLeftWrapper}>
+            <View>
+              <Icon size={25} name="times" />
             </View>
-        );
-    }
+
+          </View>
+          <View>
+            <View>
+              <Text style={styles.headerSubTitle}>Next</Text>
+            </View>
+          </View>
+        </View>
+        <View>
+          <Image
+            style={styles.pickedImageWrapper}
+            source={{ uri: this.state.pickedImage }}
+          />
+        </View>
+        <ScrollView
+          ref={ref => {
+            this.scrollview_ref = ref;
+          }}>
+          <View style={styles.galleryImagesWrapper}>
+            {this.displayImages()}
+          </View>
+        </ScrollView>
+        <View style={styles.footer}>
+          <View style={styles.pickedFooterSection}>
+            <Text style={styles.pickedFooterTitle}>GALLERY</Text>
+          </View>
+          <View style={styles.footerSection}>
+            <Text style={styles.footerTitle}>PHOTO</Text>
+          </View>
+          <View style={styles.footerSection}>
+            <Text style={styles.footerTitle}>VIDEO</Text>
+          </View>
+        </View>
+        {/* <Text style={{ color: 'red' }} >WELLCOME</Text> */}
+      </View>
+    );
+  }
 }
 
 export default GalleryScreen;
 
 export const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-    },
-    footer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
+  container: {
+    display: 'flex',
+    flex: 1,
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
 
-    },
-    footerSection: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 10,
-    },
-    pickedFooterSection: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 10,
-        borderBottomColor: AppColor.black,
-        borderBottomWidth: 2,
-    },
-    footerTitle: {
-        fontSize: 16,
-        color: AppColor.gray,
-    },
-    pickedFooterTitle: {
-        fontSize: 16,
-        color: AppColor.black,
-    },
-    headerWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-    },
-    headerLeftWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    headerTitleWrapper: {
-        marginLeft: 15,
-    },
-    headerTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    headerSubTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: AppColor.primary,
-    },
-    image: {
-        width: width / 4.1,
-        height: width / 4,
-        padding: 1,
-    },
-    galleryImagesWrapper: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    pickedImageWrapper: {
-        height: height / 2,
-    },
+  },
+  footerSection: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+  },
+  pickedFooterSection: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+    borderBottomColor: AppColor.black,
+    borderBottomWidth: 2,
+  },
+  footerTitle: {
+    fontSize: 16,
+    color: AppColor.gray,
+  },
+  pickedFooterTitle: {
+    fontSize: 16,
+    color: AppColor.black,
+  },
+  headerWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+  },
+  headerLeftWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  headerTitleWrapper: {
+    marginLeft: 15,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  headerSubTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: AppColor.primary,
+  },
+  image: {
+    width: width / 4.1,
+    height: width / 4,
+    padding: 1,
+  },
+  galleryImagesWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  pickedImageWrapper: {
+    height: height / 2,
+  },
 });

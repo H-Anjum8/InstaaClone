@@ -34,7 +34,7 @@ const Reels = () => {
         </Text>
         <Feather name="camera" style={{fontSize: 25, color: 'white'}} />
       </View>
-      {/* <ReelsComponent /> */}
+      <ReelsComponent />
     </View>
   );
 };

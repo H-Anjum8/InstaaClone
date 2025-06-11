@@ -83,7 +83,7 @@ const ProfileDetails = () => {
                 <TouchableOpacity >
                     <View style={styles.btnstyle1}>
 
-                        <MaterialIcon name="person-add" size={24} color={AppColor.secondary} />
+                        <MaterialIcon name="person-add" size={24} color={AppColor.black} />
                     </View>
 
                 </TouchableOpacity>
