@@ -35,7 +35,7 @@ export const UserData = [
             time: '04:00 PM',
             date: '3 May',
             image: require('../assets/data/harshp.jpg'),
-           reel: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            reel: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
             caption: 'hi....',
             like: 25,
             comments: 490,
@@ -181,7 +181,7 @@ export const UserData = [
             share: 500
         }
     },
-        {
+    {
         id: 10,
         name: 'Elon Musk',
         username: 'muskelon',
@@ -217,7 +217,7 @@ export const UserData = [
             time: '04:00 PM',
             date: '3 May',
             image: require('../assets/data/harshp.jpg'),
-           reel: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            reel: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
             caption: 'hi....',
             like: 25,
             comments: 490,
@@ -715,36 +715,42 @@ export const SearchUserData = [
 
 ]
 export const videoData = [
-  {
-    // video: require('../assets/videos/video1.mp4'),
-    postProfile: require('../assets/SearchImages/post1.jpg'),
-    title: 'Ram_Charan',
-    description: 'Feel the buity of nature',
-    likes: '245k',
-    isLike: false,
-  },
-//   {
-// video: require('../assets/videos/video2.mp4'),
-//     postProfile: require('../assets/SearchImages/post2.jpg'),
-//     title: 'The_Groot',
-//     description: "It's a tea time",
-//     likes: '656k',
-//     isLike: false,
-//   },
-//   {git 
-//    video: require('../assets/videos/video3.mp4'),
-//     postProfile: require('../assets/SearchImages/post3.jpg'),
-//     title: 'loverland',
-//     description: 'Feel the buity of nature',
-//     likes: '243k',
-//     isLike: false,
-//   },
-//   {
-//   video: require('../assets/videos/video4.mp4'),
-//     postProfile: require('../assets/SearchImages/post4.jpg'),
-//     title: 'mr. bean',
-//     description: 'How cute it is !!',
-//     likes: '876k',
-//     isLike: false,
-//   },
+    {
+        id: 1,
+        video:'https://media.w3.org/2010/05/sintel/trailer_hd.mp4',
+        postProfile: require('../assets/SearchImages/post1.jpg'),
+        title: 'Ram_Charan',
+        description: 'Feel the buity of nature',
+        likes: '245k',
+        comments:'20k',
+        isLike: false,
+    },
+    {
+        id: 2,
+        video: 'https://www.w3schools.com/html/mov_bbb.mp4',
+        postProfile: require('../assets/SearchImages/post2.jpg'),
+        title: 'The_Groot',
+        description: "It's a tea time",
+        likes: '656k',
+        comments:'50k',
+        isLike: false,
+    },
+    // {
+    //     id: 3,
+    //     video: require('../assets/videos/video3.mp4'),
+    //     postProfile: require('../assets/SearchImages/post3.jpg'),
+    //     title: 'loverland',
+    //     description: 'Feel the buity of nature',
+    //     likes: '243k',
+    //     isLike: false,
+    // },
+    // {
+    //     id: 4,
+    //     video: require('../assets/videos/video4.mp4'),
+    //     postProfile: require('../assets/SearchImages/post4.jpg'),
+    //     title: 'mr. bean',
+    //     description: 'How cute it is !!',
+    //     likes: '876k',
+    //     isLike: false,
+    // },
 ];
