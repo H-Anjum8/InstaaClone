@@ -5,6 +5,7 @@ import GalleryScreen from '../../components/GalleryScreen'
 const AddPost = () => {
   return (
     <View>
+  
     <GalleryScreen/>
     </View>
   )

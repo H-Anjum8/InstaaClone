@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Text,
   View,
@@ -6,210 +6,352 @@ import {
   Dimensions,
   Image,
   ScrollView,
-
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Picker } from '@react-native-picker/picker';
 import { AppColor } from '../utils/AppColors';
+import { useNavigation } from '@react-navigation/native';
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const { width, height } = Dimensions.get('window');
+const screenWidth = width;
+const imageSize = screenWidth / 3;
 
-async function hasAndroidPermission() {
-  const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+const mockAlbums = {
+  all: [
+    { uri: require('../assets/SearchImages/post1.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post2.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post3.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post4.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post5.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post6.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post7.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post8.jpg'), type: 'image' },
+  ],
+  images: [
+    { uri: require('../assets/SearchImages/post1.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post2.jpg'), type: 'image' },
+  ],
+  videos: [
+    { uri: require('../assets/SearchImages/post3.jpg'), type: 'image' },
+    { uri: require('../assets/SearchImages/post4.jpg'), type: 'image' },
+  ],
+};
 
-  const hasPermission = await PermissionsAndroid.check(permission);
-  if (hasPermission) {
-    return true;
-  }
+const AddPostScreen = () => {
+  const navigation = useNavigation();
+  const [albums, setAlbums] = useState(mockAlbums);
+  const [selectedAlbum, setSelectedAlbum] = useState('all');
+  const [media, setMedia] = useState(mockAlbums['all']);
+  const [pickedMedia, setPickedMedia] = useState(
+    mockAlbums['all'].length > 0 ? [mockAlbums['all'][0].uri] : []
+  );
+  const [filter, setFilter] = useState('all');
+  const [showFooter, setShowFooter] = useState(true);
+  const [multiSelect, setMultiSelect] = useState(true); // Multi-select toggle
+  const scrollViewRef = useRef(null);
+  const imgArr = useRef([]);
 
-  const status = await PermissionsAndroid.request(permission);
-  return status === 'granted';
-}
+  const pickMedia = () => {
+    const mediaType = filter === 'videos' ? 'video' : 'photo';
+    launchImageLibrary({ mediaType, quality: 1 }, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled media picker');
+      } else if (response.errorCode) {
+        Alert.alert('Error', response.errorMessage || 'Something went wrong');
+      } else if (response.assets && response.assets[0].uri) {
+        const newMedia = {
+          uri: { uri: response.assets[0].uri },
+          type: mediaType,
+        };
+        const updatedMedia = [...media, newMedia];
+        setMedia(updatedMedia);
+        setAlbums((prevAlbums) => ({
+          ...prevAlbums,
+          [selectedAlbum]: [...(prevAlbums[selectedAlbum] || []), newMedia],
+          all: [...prevAlbums.all, newMedia],
+        }));
 
+        // Immediately show new media in top preview
+        setPickedMedia((prev) => multiSelect ? [...prev, newMedia.uri] : [newMedia.uri]);
+      }
+    });
+  };
 
+  const mediaPressed = (item, key) => {
+    setPickedMedia((prev) => {
+      const alreadySelected = prev.includes(item.uri);
+      if (multiSelect) {
+        return alreadySelected
+          ? prev.filter((uri) => uri !== item.uri)
+          : [...prev, item.uri];
+      } else {
+        return alreadySelected ? [] : [item.uri];
+      }
+    });
 
-
-export class GalleryScreen extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = { images: [], albums: [], pickedImage: '', category: '' };
-    this.imgArr = [];
-  }
-
-  async componentDidMount() {
-    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-      return;
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        x: 0,
+        y: imgArr.current[key],
+        animated: true,
+      });
     }
-
-    let params = { assetType: 'All' };
-    CameraRoll.getAlbums(params)
-      .then(albums => {
-        this.setState({ albums: albums });
-        console.log(albums);
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  imagePressed = (item, key) => {
-    this.setState({ pickedImage: item.node.image.uri });
-    this.scrollview_ref.scrollTo({
-      x: 0,
-      y: this.imgArr[key],
-      Animation: true,
-    });
   };
-  pickedCategory = (itemValue, itemIndex) => {
-    let params = { first: 40, groupName: this.state.albums[itemIndex].title };
 
-    this.setState({ category: itemValue });
-
-    CameraRoll.getPhotos(params).then(imgs => {
-      console.log(params);
-      console.log(imgs);
-      this.setState({
-        images: imgs.edges,
-        pickedImage: imgs.edges[0].node.image.uri,
-      });
+  const displayMedia = () => {
+    const filteredMedia = media.filter((item) => {
+      if (filter === 'all') return true;
+      if (filter === 'images') return item.type === 'image';
+      if (filter === 'videos') return item.type === 'video';
+      return true;
     });
-  };
-  displayImages = () => {
-    return this.state.images.map((item, key) => {
+
+    return filteredMedia.map((item, key) => {
+      const selectedIndex = pickedMedia.findIndex((uri) => uri === item.uri);
+      const isSelected = selectedIndex !== -1;
+
       return (
         <TouchableOpacity
           key={key}
-          onLayout={event => {
+          onLayout={(event) => {
             const layout = event.nativeEvent.layout;
-            this.imgArr[key] = layout.y;
+            imgArr.current[key] = layout.y;
           }}
-          onPress={() => {
-            this.imagePressed(item, key);
-          }}>
-          <Image style={styles.image} source={{ uri: item.node.image.uri }} />
+          onPress={() => mediaPressed(item, key)}
+        >
+          <View>
+            <Image
+              style={[styles.media, isSelected && styles.selectedMedia]}
+              source={item.uri}
+            />
+            {isSelected && (
+              <View style={styles.selectionOverlay}>
+                <Text style={styles.selectionText}>{selectedIndex + 1}</Text>
+              </View>
+            )}
+          </View>
         </TouchableOpacity>
       );
     });
   };
-  displayAssetCategories = () => {
-    return this.state.albums.map((category, index) => {
-      return <Picker.Item label={category.title} value={index} />;
-    });
-  };
-  render() {
-    return (
-      <View >
-        <View style={styles.headerWrapper}>
-          <View style={styles.headerLeftWrapper}>
-            <View>
-              <Icon size={25} name="times" />
-            </View>
 
-          </View>
-          <View>
-            <View>
-              <Text style={styles.headerSubTitle}>Next</Text>
-            </View>
-          </View>
+  const handlePost = () => {
+    console.log('Posting media:', pickedMedia);
+    Alert.alert('Success', `Posted ${pickedMedia.length} media items!`);
+  };
+
+  const handleScroll = (event) => {
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
+    const scrollPosition = contentOffset.y + layoutMeasurement.height;
+    const contentHeight = contentSize.height;
+    setShowFooter(!(scrollPosition >= contentHeight - 10));
+  };
+
+  const handleAlbumChange = (value) => {
+    setSelectedAlbum(value);
+    setMedia(albums[value] || []);
+    setPickedMedia(albums[value].length > 0 ? [albums[value][0].uri] : []);
+  };
+
+  return (
+    <ScrollView
+      style={styles.main}
+      ref={scrollViewRef}
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
+    >
+      <View style={styles.headerWrapper}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon size={25} name="times" color={AppColor.black} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlePost}>
+          <Text style={styles.headerSubTitle}>Post</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.pickedMediaContainer}>
+        {pickedMedia.length > 0 ? (
+          pickedMedia.length === 1 ? (
+            <Image
+              style={styles.singlePickedMediaWrapper}
+              source={pickedMedia[0]}
+            />
+          ) : (
+            <ScrollView horizontal>
+              {pickedMedia.map((uri, index) => (
+                <Image key={index} style={styles.pickedMediaWrapper} source={uri} />
+              ))}
+            </ScrollView>
+          )
+        ) : (
+          <Text style={styles.noMediaText}>No Media Selected</Text>
+        )}
+      </View>
+
+      <View style={styles.filterWrapper}>
+        <View style={styles.dropdownContainer}>
+          <Picker
+            selectedValue={filter}
+            onValueChange={setFilter}
+            style={styles.picker}
+            dropdownIconColor="white"
+          >
+            <Picker.Item label="Recent" value="all" />
+            <Picker.Item label="Images" value="images" />
+            <Picker.Item label="Videos" value="videos" />
+          </Picker>
         </View>
-        <View>
-          <Image
-            style={styles.pickedImageWrapper}
-            source={{ uri: this.state.pickedImage }}
-          />
+
+        <View style={styles.cross}>
+          <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
+            <Icon name="clone" size={25} color={multiSelect ? 'white' : AppColor.primary} />
+          </TouchableOpacity>
         </View>
-        <ScrollView
-          ref={ref => {
-            this.scrollview_ref = ref;
-          }}>
-          <View style={styles.galleryImagesWrapper}>
-            {this.displayImages()}
-          </View>
-        </ScrollView>
+      </View>
+
+      <ScrollView style={styles.galleryScrollWrapper}>
+        <View style={styles.galleryMediaWrapper}>
+          <TouchableOpacity style={styles.addMediaButton} onPress={pickMedia}>
+            <Icon name="camera" size={30} color={AppColor.gray} />
+          </TouchableOpacity>
+          {displayMedia()}
+        </View>
+      </ScrollView>
+
+      {showFooter && (
         <View style={styles.footer}>
           <View style={styles.pickedFooterSection}>
-            <Text style={styles.pickedFooterTitle}>GALLERY</Text>
+            <Text style={styles.pickedFooterTitle}>POST</Text>
           </View>
           <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>PHOTO</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AddStory')}>
+              <Text style={styles.footerTitle}>Story</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>VIDEO</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AddReel')}>
+              <Text style={styles.footerTitle}>REEL</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.footerSection}>
+            <TouchableOpacity onPress={() => navigation.navigate('GoLive')}>
+              <Text style={styles.footerTitle}>Live</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        {/* <Text style={{ color: 'red' }} >WELLCOME</Text> */}
-      </View>
-    );
-  }
-}
+      )}
+    </ScrollView>
+  );
+};
 
-export default GalleryScreen;
+export default AddPostScreen;
 
-export const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flex: 1,
-  },
-  footer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-
-  },
-  footerSection: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-  },
-  pickedFooterSection: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-    borderBottomColor: AppColor.black,
-    borderBottomWidth: 2,
-  },
-  footerTitle: {
-    fontSize: 16,
-    color: AppColor.gray,
-  },
-  pickedFooterTitle: {
-    fontSize: 16,
-    color: AppColor.black,
+const styles = StyleSheet.create({
+  main: {
+    backgroundColor: AppColor.white,
   },
   headerWrapper: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 10,
-  },
-  headerLeftWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  headerTitleWrapper: {
-    marginLeft: 15,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    borderBottomWidth: 1,
+    backgroundColor: 'black',
+    borderBottomColor: AppColor.lightGray,
   },
   headerSubTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: AppColor.primary,
+    color: 'white',
   },
-  image: {
-    width: width / 4.1,
-    height: width / 4,
-    padding: 1,
+
+  pickedMediaContainer: {
+    height: height / 2.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: AppColor.lightGray,
   },
-  galleryImagesWrapper: {
-    display: 'flex',
+  singlePickedMediaWrapper: {
+    width: width,
+    height: height / 2.5,
+    resizeMode: 'cover',
+  },
+  pickedMediaWrapper: {
+    width: 150,
+    height: 150,
+    resizeMode: 'cover',
+    margin: 5,
+  },
+  noMediaText: { textAlign: 'center', fontSize: 16, color: AppColor.gray },
+
+  cross: { backgroundColor: 'black', justifyContent: 'center', marginRight: 10 },
+
+  filterWrapper: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    backgroundColor: 'black',
   },
-  pickedImageWrapper: {
-    height: height / 2,
+  dropdownContainer: { backgroundColor: 'black', width: 130 },
+  picker: { color: 'white', padding: 0, backgroundColor: 'black' },
+
+  galleryMediaWrapper: { flexDirection: 'row', flexWrap: 'wrap' },
+  media: { width: imageSize, height: imageSize },
+  selectedMedia: { borderWidth: 2, borderColor: AppColor.primary },
+
+  addMediaButton: {
+    width: imageSize,
+    height: imageSize,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
   },
+  selectionOverlay: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectionText: { color: 'white', fontWeight: 'bold', fontSize: 18 },
+
+  footer: {
+    position: 'absolute',
+    top: 640,
+    left: 20,
+    backgroundColor: 'black',
+    width: width,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 100,
+    paddingVertical: 10,
+  },
+  footerSection: {
+    backgroundColor: 'black',
+    borderRadius: 100,
+    flex: 1,
+    alignItems: 'center',
+    padding: 4,
+  },
+  pickedFooterSection: {
+    flex: 1,
+    alignItems: 'center',
+    paddingHorizontal: 2,
+    borderBottomWidth: 2,
+    borderBottomColor: AppColor.black,
+    backgroundColor: 'black',
+    borderRadius: 100,
+  },
+  footerTitle: { fontSize: 16, color: AppColor.gray },
+  pickedFooterTitle: { color: AppColor.gray, fontSize: 16, fontWeight: 'bold' },
+  galleryScrollWrapper: {
+  maxHeight: 400, 
+},
 });

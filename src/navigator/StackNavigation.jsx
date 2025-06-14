@@ -10,6 +10,10 @@ import ResetPasswordNumber from '../screens/auth/ResetPasswordNumber';
 import ResetPasswordEmail from '../screens/auth/ResetPasswordEmail';
 import SearchScreenPost from '../screens/dashboard/SearchScreenPost';
 import Search from '../screens/dashboard/Search';
+import AddReel from '../screens/dashboard/AddReel';
+import AddPost from '../screens/dashboard/AddPost';
+import AddStory from '../screens/dashboard/AddStory';
+import GoLive from '../screens/dashboard/GoLive';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +67,28 @@ const StackNavigation = () => {
         component={Search}
         options={{ headerShown: false }}
       />
+        <Stack.Screen
+        name="AddReel"
+        component={AddReel}
+        options={{ headerShown: false }}
+      />
+       <Stack.Screen
+        name="AddPost"
+        component={AddPost}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddStory"
+        component={AddStory}
+        options={{ headerShown: false }}
+      />
+        <Stack.Screen
+        name="GoLive"
+        component={GoLive}
+        options={{ headerShown: false }}
+      />
+
+      
     </Stack.Navigator>
 
   );
